@@ -1,0 +1,205 @@
+/* Common styles */
+.rounded {
+    border: 1px solid gray;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.aleft {
+    text-align: left;
+}
+
+.aright {
+    text-align: right;
+}
+
+/* Container styles */
+
+body {
+    text-align: center;
+}
+
+.br-center {
+    display: table;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.center {
+    display: inline-block;
+    margin-bottom: 10px;
+    vertical-align: top;
+}
+
+.topmenu {
+    margin-bottom: 10px;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+
+tbody:not(:first-child) {
+    border-top: 1px solid lightgray;
+}
+
+tbody:not(:last-child) {
+    border-bottom: 1px solid lightgray;
+}
+
+td {
+    padding: 3px 5px;
+    white-space: nowrap;
+}
+
+
+/* Input styles */
+.input {
+    height: 30px;
+    width: 180px;
+}
+
+.input:focus {
+    outline: none;
+}
+
+.ok {
+    border: solid 2px darkgreen;
+}
+
+.ok:hover,
+.ok:focus {
+    border: solid 2px limegreen;
+}
+
+.err {
+    border: solid 2px darkred;
+}
+
+.err:hover,
+.err:focus {
+    border: solid 2px crimson;
+}
+
+.inf {
+    border: solid 1px black;
+}
+
+.inf:hover,
+.inf:focus {
+    border: solid 1px gray;
+}
+
+.on,
+.off {
+    background-color: white;
+    border: solid 2px darkblue;
+    display: block;
+}
+
+.on:hover,
+.off:hover {
+    background-color: aliceblue;
+    border: solid 2px royalblue;
+}
+
+.off .ck-on {
+    display: none;
+}
+
+.on .ck-on {
+    display: block;
+}
+
+.off .ck-off {
+    display: block;
+}
+
+.on .ck-off {
+    display: none;
+}
+
+/* Navigation */
+
+.dropbtn {
+    background: radial-gradient(closest-corner, lightblue, aliceblue);
+    padding: 5px 10px;
+    border: lightblue solid 1px;
+    font: 16px serif;
+    box-sizing: border-box;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropcontent {
+    display: none;
+    position: absolute;
+    background: radial-gradient(closest-corner, lightblue, aliceblue);
+    border: lightblue solid 1px;
+    z-index: 1;
+    width: calc(100% - 2px);
+}
+
+/* Links inside the dropdown */
+.dropcontent a {
+    color: black;
+    padding: 5px 10px;
+    text-decoration: none;
+    display: block;
+}
+
+a.dropbtn {
+    color: black;
+    padding: 5px 10px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+/* Change color of dropdown links on hover */
+.dropcontent a:hover {
+    background-color: #4442;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropcontent {
+    display: block;
+}
+
+/* Change the background color of the dropdown button when the dropdown content is shown */
+.dropbtn:hover,
+.dropdown:hover .dropbtn {
+    background: aliceblue;
+}
+
+/* Label styles */
+
+h3 {
+    margin: 10px;
+    text-align: center;
+}
+
+h4 {
+    margin: 5px;
+    text-align: center;
+}
+
+.math {
+    font-size: 80%;
+}
+
+.errMsg {
+    color: firebrick;
+    text-align: center;
+}
+
+.warnMsg {
+    color: chocolate;
+    text-align: center;
+}

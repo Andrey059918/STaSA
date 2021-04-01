@@ -1,0 +1,139 @@
+span {
+    display: inline-block;
+    border: 1px solid gray;
+    border-radius: 5px;
+    vertical-align: top
+}
+
+h3 {
+    margin: 25px 5px 5px 5px;
+    text-align: center;
+}
+
+table,
+tbody {
+    border-collapse: collapse;
+}
+
+
+tbody:not(:first-child) {
+    border-top: 1px solid #e0e0e0;
+}
+
+tbody:not(:last-child) {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+td {
+    padding: 3px 5px;
+    white-space: nowrap;
+}
+
+input[type="text"],
+input[type="number"] {
+    border: none;
+    border-radius: 5px;
+    height: 24px;
+    margin: 2px 0;
+    width: 180px;
+}
+
+input.ok {
+    box-shadow: 0 0 1px 2px #250;
+}
+
+input.ok:hover {
+    box-shadow: 0 0 1px 2px #7b5;
+}
+
+input.ok:focus {
+    box-shadow: 0 0 1px 2px #7b5;
+    outline: none;
+}
+
+input.err {
+    box-shadow: 0 0 1px 2px #911;
+}
+
+input.err:hover {
+    box-shadow: 0 0 1px 2px #d30;
+}
+
+input.err:focus {
+    box-shadow: 0 0 1px 2px #d30;
+    outline: none;
+}
+
+input[readonly] {
+    box-shadow: 0 0 1px 1px black;
+}
+
+input[readonly]:hover {
+    box-shadow: 0 0 1px 1px gray;
+}
+
+input[readonly]:focus {
+    box-shadow: 0 0 1px 1px gray;
+    outline: none;
+}
+
+.errMsg {
+    color: firebrick;
+    text-align: center;
+}
+
+.warnMsg {
+    color: chocolate;
+    text-align: center;
+}
+
+.math-right {
+    font-size: 90%;
+    text-align: right;
+}
+
+.math-left {
+    font-size: 90%;
+}
+
+/* Toggle button */
+.ck-button {
+    background-color: white;
+    box-shadow: 0 0 1px 2px #b1aeef;
+    border-radius: 5px;
+    overflow: auto;
+    margin: 2px 0;
+}
+
+.ck-button label span {
+    text-align: center;
+    user-select: none;
+    padding: 3px 0px;
+    border: none;
+}
+
+.ck-button input ~ .ck-on {
+    display: none;
+}
+
+.ck-button input:checked ~ .ck-on {
+    display: block;
+}
+
+.ck-button input ~ .ck-off {
+    display: block;
+}
+
+.ck-button input:checked ~ .ck-off {
+    display: none;
+}
+
+.ck-button label input {
+    display: none;
+    z-index: -1;
+}
+
+.ck-button input:hover ~ span {
+    background-color: #d9d6f7;
+    color: black;
+}

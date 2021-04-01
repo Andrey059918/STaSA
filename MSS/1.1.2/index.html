@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Расчёт СМО</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/STaSA/shared/style.css">
+    <link rel="icon" type="image/png" href="/favicon.png">
+</head>
+
+<body>
+    <script type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+    </script>
+    <script type="text/javascript" id="Shared-script" src="/shared.js">
+    </script>
+    <div class="topmenu">
+        <a class="dropbtn" href="/STaSA/index.html">Начальная страница</a>
+        <span class="dropdown">
+            <button class="dropbtn">Системы массового обслуживания</button>
+            <div class="dropcontent">
+                <a href="/STaSA/MSS/Stable/">Последняя версия</a>
+                <a href="/STaSA/MSS/1.1.2/">1.1.2</a>
+                <a href="/STaSA/MSS/1.1.1/">1.1.1</a>
+                <a href="/STaSA/MSS/1.1.0/">1.1.0</a>
+                <a href="/STaSA/MSS/1.0.1/">1.0.1</a>
+                <a href="/STaSA/MSS/1.0.0/">1.0.0</a>
+            </div>
+        </span>
+        <span class="dropdown">
+            <button class="dropbtn">Управление запасами</button>
+            <div class="dropcontent">
+                <a href="/STaSA/Stock/Stable/">Последняя версия</a>
+                <a href="/STaSA/Stock/1.0.0/">1.0.0</a>
+            </div>
+        </span>
+    </div>
+    <span class="rounded center">
+        <table class="aleft">
+            <tbody>
+                <tr>
+                    <td colspan="3">
+                        <h3>Исходные данные</h3>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <td colspan="3">
+                        <h4>Условие задачи</h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(t(\lambda)=\)</td>
+                    <td><input type="number" class="rounded input err" id="iTL" min="0" oninput="InputDivisor('TL',[1,'L'])"></td>
+                    <td>Средний интервал поступления заявок</td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(\lambda=\dfrac 1 {t(\lambda)}=\)</td>
+                    <td><input type="number" class="rounded input err" id="iL" min="0" oninput="InputDivisor('L',[1,'TL'])"></td>
+                    <td>Интенсивность поступления заявок</td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(t(\mu)=\)</td>
+                    <td><input type="number" class="rounded input err" id="iTM" min="0" oninput="InputDivisor('TM',[1,'M'])"></td>
+                    <td>Среднее время обработки заявки каналом</td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(\mu=\dfrac 1 {t(\mu)}=\)</td>
+                    <td><input type="number" class="rounded input err" id="iM" min="0" oninput="InputDivisor('M',[1,'TM'])"></td>
+                    <td>Интенсивность обработки заявок каналом</td>
+                </tr>
+                <tr>
+                    <td />
+                    <td><button id="iI" class="rounded input off" onclick="ClickCheck('I')"><span class="ck-off">Ограниченная очередь</span><span class="ck-on">Свободная очередь</span></button></td>
+                    <td />
+                </tr>
+                <tr>
+                    <td class="math aright">\(n=\)</td>
+                    <td><input type="number" class="rounded input ok" id="iN" value="0" min="0" oninput="InputInt('N')"></td>
+                    <td id="queryMax">Максимальный размер очереди</td>
+                    <td id="queryCalc" style="display:none">Размер очереди для расчёта</td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(S=\)</td>
+                    <td><input type="number" class="rounded input ok" id="iS" value="1" min="1" oninput="InputInt('S')"></td>
+                    <td>Количество потоков обслуживания</td>
+                </tr>
+            </tbody>
+            <!--tbody>
+                <tr>
+                    <td colspan="3">
+                        <h4>Параметры округления</h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td />
+                    <td><button id="rForce" class="rounded input off" onclick="ClickCheck('rForce')"><span class="ck-off">&cross; Округлять числа &cross;</span><span class="ck-on">&check; Округлять числа &check;</span></button></td>
+                    <td />
+                </tr>
+                <tr>
+                    <td />
+                    <td><input type="number" class="rounded input ok" id="rMax" value="0" min="0" oninput="InputInt('rMax')"></td>
+                    <td>Максимальное количество дес. разрядов</td>
+                </tr>
+                <tr>
+                    <td />
+                    <td><button id="rSoft" class="rounded input on" onclick="ClickCheck('rSoft')"><span class="ck-off">&cross; "Мягкое" округление &cross;</span><span class="ck-on">&check; "Мягкое" округление &check;</span></button></td>
+                </tr>
+                <tr>
+                    <td />
+                    <td><input type="number" class="rounded input ok" id="rMin" value="0" min="0" oninput="InputInt('rMin')"></td>
+                    <td>Предпочтительное количество разрядов</td>
+                </tr>
+                <tr>
+                    <td />
+                    <td><input type="number" class="rounded input ok" id="rCoeff" value="0" min="0" oninput="InputInt('rCoeff')"></td>
+                    <td>Степень округления<br></td>
+                </tr>
+            </tbody-->
+        </table>
+    </span>
+    <span class="rounded center">
+        <table class="aleft">
+            <tbody>
+                <tr>
+                    <td colspan="3">
+                        <h3>Результаты расчёта</h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="warnMsg" id="warnRoundF">Предупреждение: параметры округления заданы неверно, округление не используется.</td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="warnMsg" id="warnRoundS">Предупреждение: параметры "мягкого" округления заданы неверно, оно не используется.</td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="errMsg" id="errInput">ОШИБКА: Не все данные в условии задачи введены верно.<br>Проверьте поля, отмеченные красным.</td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="errMsg" id="errUnstable">ОШИБКА: СМО не может работать в установившемся режиме,<br>т.к. очередь будет бесконечно нарастать <span class="math-left">(\( \psi_к \geq 1\))</span>.</td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <td colspan="3">
+                        <h4>Общие результаты</h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(N=n+S=\)</td>
+                    <td class="math aright" style="display: none">\(N=n+1=\)</td>
+                    <td><input type="text" id="oN" class="rounded input inf" readonly></td>
+                    <td>Максимум активных заявок в системе</td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(\psi = \dfrac \lambda \mu=\)</td>
+                    <td><input type="text" id="oPsi" class="rounded input inf" readonly></td>
+                    <td>Интенсивность потока заявок (общая)</td>
+                </tr>
+                <tr>
+                    <td class="math aright" id="eqP1">\(P_{отк} =P_N=\dfrac \lambda {\mu + \lambda}=\)</td>
+                    <td class="math aright" id="eqP2" style="display:none">\(P_{отк} =P_N=\)</td>
+                    <td class="math aright" id="eqP3" style="display:none">\(P_{отк} =0=\)</td>
+                    <td><input type="text" id="oP" class="rounded input inf" readonly></td>
+                    <td>Вероятность отклонения заявки</td>
+                </tr>
+                <tr>
+                    <td class="math aright" id="eqQ1">\(Q=1-P_{отк} = \dfrac \mu {\mu + \lambda}=\)</td>
+                    <td class="math aright" id="eqQ2" style="display:none">\(Q=1-P_{отк}=\)</td>
+                    <td class="math aright" id="eqQ3" style="display:none">\(Q=1=\)</td>
+                    <td><input type="text" id="oQ" class="rounded input inf" readonly></td>
+                    <td>Вероятность обслуживания заявки</td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(A_а=\lambda \cdot Q=\)</td>
+                    <td><input type="text" id="oAa" class="rounded input inf" readonly></td>
+                    <td>Абсолютная пропускная способность</td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(A_н=\mu \cdot S=\)</td>
+                    <td><input type="text" id="oAn" class="rounded input inf" readonly></td>
+                    <td>Номинальная пропускная способность</td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(A_ф=\dfrac {A_а} {A_н}=\)</td>
+                    <td><input type="text" id="oAf" class="rounded input inf" readonly></td>
+                    <td>Фактическая пропускная способность, %</td>
+                </tr>
+            </tbody>
+            <tbody id="tbThread" style="display: none">
+                <tr>
+                    <td colspan="3">
+                        <h4>Многопоточная СМО</h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(\psi _к = \dfrac \psi S =\)</td>
+                    <td><input type="text" id="oPsik" class="rounded input inf" readonly></td>
+                    <td>Интенсивность потока заявок (на канал)</td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(S_з =\psi \cdot Q\)</td>
+                    <td><input type="text" id="oSz" class="rounded input inf" readonly></td>
+                    <td>Среднее число занятых каналов</td>
+                </tr>
+                <tr>
+                    <td class="math aright">\( K_з =S_з / S\)</td>
+                    <td><input type="text" id="oKz" class="rounded input inf" readonly></td>
+                    <td>Коэффициент занятости каналов</td>
+                </tr>
+            </tbody>
+            <tbody id="tbQuery" style="display: none">
+                <tr>
+                    <td colspan="3">
+                        <h4>СМО с очередью</h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="eqLq1" class="math aright">\(L_q=\dfrac{\psi^2 (1-\psi^n (n+1+n\psi))}{(1-\psi)^2} P_0=\)</td>
+                    <td id="eqLq2" class="math aright" style="display:none">\(L_q=\dfrac{n \cdot (n+1)}{2 \cdot (n+2)}=\)</td>
+                    <td id="eqLq3" class="math aright" style="display:none">\(L_q=\dfrac {\psi^2}{1-\psi}=\)</td>
+                    <td id="eqLq4" class="math aright" style="display:none">\(L_q=\dfrac{\psi^{S+1}}{S!S}\dfrac {(1-\psi_к^n(n+1+n\psi_к))}{(1-\psi_к)^2} \cdot P_0=\)</td>
+                    <td id="eqLq5" class="math aright" style="display:none">\(L_q=\dfrac{\psi^S}{S!}\cdot \dfrac{n(n+1)}2 \cdot P_0=\)</td>
+                    <td id="eqLq6" class="math aright" style="display:none">\(L_q=\dfrac {\psi^S \psi_к}{!S (1-\psi_к)^2} P_0=\)</td>
+                    <td><input type="text" id="oLq" class="rounded input inf" readonly></td>
+                    <td>Среднее число заявок в очереди</td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(W_q=\dfrac{L_q}{A_а} =\)</td>
+                    <td><input type="text" id="oWq" class="rounded input inf" readonly></td>
+                    <td>Среднее время заявки в очереди</td>
+                </tr>
+                <tr>
+                    <td id="eqLs1" class="math aright">\(L_s=\sum\limits_{i=0}^N i\cdot P_i=\)</td>
+                    <td id="eqLs2" class="math aright" style="display:none">\(L_s=\dfrac {n+1}2=\)</td>
+                    <td id="eqLs3" class="math aright" style="display:none">\(L_s=\dfrac \psi{1-\psi}=\)</td>
+                    <td id="eqLs4" class="math aright" style="display:none">\(L_s=L_q+S_з=\)</td>
+                    <td><input type="text" id="oLs" class="rounded input inf" readonly></td>
+                    <td>Среднее число заявок в системе</td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(W_s= \dfrac{L_s}{A_а}=\)</td>
+                    <td><input type="text" id="oWs" class="rounded input inf" readonly></td>
+                    <td>Среднее время заявки в системе</td>
+                </tr>
+            </tbody>
+            <tbody id="tbProbs">
+                <tr>
+                    <td colspan="3">
+                        <h4>Вероятности \(P_k\)</h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(P_0=\)</td>
+                    <td><input type="text" id="oP0" class="rounded input inf" readonly></td>
+                    <td rowspan="0">
+                        <div>Вероятность события "Активно k заявок":</div>
+                        <div id="eqP_S1_I" class="math-left" style="display:none">
+                            \(P_0=1-\psi\)
+                        </div>
+                        <div id="eqP_S1_P1" class="math-left" style="display:none">
+                            \(P_k=\dfrac 1 {N+1}\)
+                        </div>
+                        <div id="eqP_S1_PP" class="math-left">
+                            \(P_0=\dfrac {1-\psi}{1-\psi^{N+1}}\)
+                        </div>
+                        <div id="eqP_S1" class="math-left">
+                            \(P_k=P_0\cdot \psi\ ^k\)
+                        </div>
+                        <div id="eqP_SS_N0" class="math-left" style="display:none">
+                            \(P_0=\Big[\sum\limits_{k=0}^S\dfrac{\psi^k}{k!}\Big]^{-1}\)
+                        </div>
+                        <div id="eqP_SS_I" class="math-left" style="display:none">
+                            \(P_0=\Big[\sum\limits_{k=0}^S\dfrac{\psi^k}{k!}+\dfrac{\psi^{S+1}}{S! \cdot (S-\psi)}\Big]^{-1}\)
+                        </div>
+                        <div id="eqP_SS_NN_P1" class="math-left" style="display:none">
+                            \(P_0=\Big[\sum\limits_{k=0}^S\dfrac{\psi^k}{k!} +\dfrac{\psi^{S} \cdot n}{S!}\Big]^{-1}\)
+                        </div>
+                        <div id="eqP_SS_NN_PP" class="math-left" style="display:none">
+                            \(P_0=\Big[\sum\limits_{k=0}^S\dfrac{\psi^k}{k!}+ \dfrac{\psi^{S+1}\cdot(1-\psi_к^n)}{S!\cdot(S-\psi)}\Big]^{-1}\)
+                        </div>
+                        <div id="eqP_SSPK_N0" class="math-left" style="display:none">
+                            \(P_k= \dfrac{\psi^k}{k!} \cdot P_0\)
+                        </div>
+                        <div id="eqP_SSPK_NN_P1" class="math-left" style="display:none">
+                            \( P_k=
+                            \left\{\begin{array}{l}
+                            \dfrac{\psi^k}{k!} \cdot P_0, & k=1\dots S \\
+                            \dfrac{\psi^S}{S!} \cdot P_0, & k=S+1\dots N
+                            \end{array}\right. \)
+                        </div>
+                        <div id="eqP_SSPK_NN_PP" class="math-left" style="display:none">
+                            \( P_k=
+                            \left\{\begin{array}{l}
+                            \dfrac{\psi^k}{k!} \cdot P_0, & k=1\dots S \\
+                            \dfrac{\psi^k}{S!\cdot S^{k-S}} \cdot P_0, & k=S+1\dots N
+                            \end{array}\right. \)
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(P_1=\)</td>
+                    <td><input type="text" id="oP1" class="rounded input inf" readonly></td>
+                </tr>
+            </tbody>
+        </table>
+    </span>
+    <script type="text/javascript" src="script.js">
+    </script>
+</body>
+
+</html>

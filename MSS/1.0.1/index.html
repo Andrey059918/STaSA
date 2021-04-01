@@ -1,0 +1,179 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Расчёт СМО</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="/./favicon.png">
+</head>
+
+<body>
+    <script type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+    </script>
+
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    <h3>Параметр</h3>
+                </th>
+                <th>
+                    <h3>Значение</h3>
+                </th>
+                <th>
+                    <h3>Описание</h3>
+                </th>
+            </tr>
+        </thead>
+        <tbody id="tblInp">
+            <tr>
+                <td colspan="3">
+                    <h4>Исходные данные</h4>
+                </td>
+            </tr>
+            <tr>
+                <td class="mathj">\(t(\lambda)=\)</td>
+                <td>
+                    <input type="number" id="iTl" min="0" oninput="CalculateL()">
+                </td>
+                <td>Среднее время поступления заявки</td>
+            </tr>
+            <tr>
+                <td class="mathj">\(\lambda=\dfrac 1 {t(\lambda)}=\)</td>
+                <td><input type="number" id="iL" min="0" oninput="CalculateTl()"></td>
+                <td>Интенсивность поступления заявок</td>
+            </tr>
+            <tr>
+                <td class="mathj">\(t(\mu)=\)</td>
+                <td>
+                    <input type="number" id="iTm" min="0" oninput="CalculateM()">
+                </td>
+                <td>Среднее время обработки заявки</td>
+            </tr>
+            <tr>
+                <td class="mathj">\(\mu=\dfrac 1 {t(\mu)}=\)</td>
+                <td>
+                    <input type="number" id="iM" oninput="CalculateTm()">
+                </td>
+                <td>Интенсивность обработки заявок</td>
+            </tr>
+            <tr>
+                <td class="mathj">\(n=\)</td>
+                <td>
+                    <input type="number" id="in" value="0" min="0" oninput="CalculateN()">
+                </td>
+                <td>Количество заявок в очереди</td>
+            </tr>
+            <tr>
+                <td class="mathj">\(N=\)</td>
+                <td>
+                    <input type="number" id="iN" value="1" min="1" oninput="Calculaten()">
+                </td>
+                <td>Количество заявок в системе</td>
+            </tr>
+        </tbody>
+        <tbody id="tblRes0">
+            <tr>
+                <td colspan="3">
+                    <h4>Результаты рассчёта</h4>
+                </td>
+            </tr>
+            <tr>
+                <td class="mathj">\(q=\dfrac \mu {\mu + \lambda} =\)</td>
+                <td><input type="number" id="oQ0" readonly="true"></td>
+                <td>Вероятность обслуживания заявки</td>
+            </tr>
+            <tr>
+                <td class="mathj">\(P_{отк} = 1-q=\)</td>
+                <td><input type="number" id="oPo0" readonly="true"></td>
+                <td>Вероятность отклонения заявки</td>
+            </tr>
+            <tr>
+                <td class="mathj">\(A=\lambda \cdot q=\)</td>
+                <td><input type="number" id="oA0" readonly="true"></td>
+                <td>Абсолютная пропускная способность</td>
+            </tr>
+            <tr>
+                <td class="mathj">\(A_{ном}=\dfrac 1 {t(\mu)}=\)</td>
+                <td><input type="number" id="oAn" readonly="true"></td>
+                <td>Номинальная пропускная способность</td>
+            </tr>
+            <tr>
+                <td class="mathj">\(\dfrac{A_{ном}}A=\)</td>
+                <td><input type="number" id="oR" readonly="true"></td>
+                <td>Соотношение пропускных способностей</td>
+            </tr>
+        </tbody>
+        <tbody id="tblResQ" style="display:none">
+            <tr>
+                <td colspan="3">
+                    <h4>Результаты рассчёта</h4>
+                </td>
+            </tr>
+            <tr>
+                <td class="mathj">\(\psi=\dfrac \lambda \mu =\)</td>
+                <td><input type="number" id="oP" readonly="true"></td>
+                <td>Приведённая интенсивность очереди</td>
+            </tr>
+            <tr>
+                <td class="mathj">\(P_{отк} = P_N=\)</td>
+                <td><input type="number" id="oPoQ" readonly="true"></td>
+                <td>Вероятность отклонения заявки</td>
+            </tr>
+            <tr>
+                <td class="mathj">\(q=1-P_{отк} =\)</td>
+                <td><input type="number" id="oQQ" readonly="true"></td>
+                <td>Вероятность обслуживания заявки</td>
+            </tr>
+            <tr>
+                <td class="mathj">\(A=\lambda\cdot q=\)</td>
+                <td><input type="number" id="oAQ" readonly="true"></td>
+                <td>Абсолютная пропускная способность</td>
+            </tr>
+            <tr>
+                <td class="mathj">\(L_s=\sum\limits_{i=0}^N i\cdot P_i=\)</td>
+                <td><input type="number" id="oLs" readonly="true"></td>
+                <td>Среднее число заявок в системе</td>
+            </tr>
+            <tr>
+                <td class="mathj">\(W_s= \dfrac{L_s}{\lambda\cdot (1-P_{отк})}\)</td>
+                <td><input type="number" id="oWs" readonly="true"></td>
+                <td>Среднее время заявки в системе</td>
+            </tr>
+            <tr>
+                <td class="mathj">\(W_q=W_s-\dfrac 1 \mu =\)</td>
+                <td><input type="number" id="oWq" readonly="true"></td>
+                <td>Среднее время заявки в очереди</td>
+            </tr>
+            <tr>
+                <td class="mathj">\(L_q=\lambda\cdot (1-P_{отк})\cdot W_q=\)</td>
+                <td><input type="number" id="oLq" readonly="true"></td>
+                <td>Среднее число заявок в очереди</td>
+            </tr>
+        </tbody>
+        <tbody id="tblProb" style="display:none">
+            <tr>
+                <td colspan="3">
+                    <h4>Вероятности \(P_i\)</h4>
+                </td>
+            </tr>
+            <tr>
+                <td class="mathj">\(P_0=\)</td>
+                <td><input type="number" id="P0" readonly="true"></td>
+                <td class="mathjp" rowspan="0">
+                    \(P_i=
+                    \left\{\begin{array}{l}
+                    P_0\cdot \psi^i, & \psi\neq 1,\ i=0..N\\
+                    \dfrac 1 {N+1}, & \psi= 1
+                    \end{array}\right.
+                    \)<br>
+                    ,где \(P_0=\dfrac {1-\psi}{1-\psi^{N+1}}\)
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <script type="text/javascript" src="script.js">
+    </script>
+</body>
+
+</html>

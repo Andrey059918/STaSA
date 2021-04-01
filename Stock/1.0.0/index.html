@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Модель управления запасами</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/STaSA/shared/style.css">
+    <link rel="icon" type="image/png" href="/STaSA/shared/favicon.png">
+</head>
+
+<body>
+    <script type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <script type="text/javascript" id="Helpers" src="/STaSA/shared/script.js"></script>
+    <div class="topmenu">
+        <a class="dropbtn" href="/STaSA/index.html">Начальная страница</a>
+        <span class="dropdown">
+            <button class="dropbtn">Системы массового обслуживания</button>
+            <div class="dropcontent">
+                <a href="/STaSA/MSS/Stable/">Последняя версия</a>
+                <a href="/STaSA/MSS/1.1.2/">1.1.2</a>
+                <a href="/STaSA/MSS/1.1.1/">1.1.1</a>
+                <a href="/STaSA/MSS/1.1.0/">1.1.0</a>
+                <a href="/STaSA/MSS/1.0.1/">1.0.1</a>
+                <a href="/STaSA/MSS/1.0.0/">1.0.0</a>
+            </div>
+        </span>
+        <span class="dropdown">
+            <button class="dropbtn">Управление запасами</button>
+            <div class="dropcontent">
+                <a href="/STaSA/Stock/Stable/">Последняя версия</a>
+                <a href="/STaSA/Stock/1.0.0/">1.0.0</a>
+            </div>
+        </span>
+    </div>
+    <span class="rounded center">
+        <table class="aleft">
+            <tbody>
+                <tr>
+                    <td colspan="3">
+                        <h3>Исходные данные</h3>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <td colspan="3">
+                        <h4>Основные параметры модели</h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(d=(\dfrac DT)=\)</td>
+                    <td><input type="number" class="rounded input err" id="id" min="0" oninput="InputFactor('d',['T','D'])"></td>
+                    <td>Величина спроса в единицу времени</td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(h=(\dfrac HT)=\)</td>
+                    <td><input type="number" class="rounded input err" id="ih" min="0" oninput="InputFactor('h',['T','H'])"></td>
+                    <td>Издержки хранения в единицу времени</td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(K=\)</td>
+                    <td><input type="number" class="rounded input err" id="iK" min="0" oninput="InputFloat('K')"></td>
+                    <td>Издержки оформления заказа</td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <td colspan="3">
+                        <h4>Дополнения к модели (опционально)</h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(b=(\dfrac BT)=\)</td>
+                    <td><input type="number" class="rounded input err" id="ib" min="0" oninput="InputFactor('b',['T','B'])"></td>
+                    <td>Потери из-за дефицита в единицу времени</td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(p=(\dfrac PT)=\)</td>
+                    <td><input type="number" class="rounded input err" id="ip" min="0" oninput="InputFactor('p',['T','P'])"></td>
+                    <td>Уровень производства в единицу времени</td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(L=\)</td>
+                    <td><input type="number" class="rounded input err" id="iL" min="0" oninput="InputFloat('L')"></td>
+                    <td>Срок выполнения заказа</td>
+                </tr>
+                <!--tr>
+                    <td class="math aright">\(c=\)</td>
+                    <td><input type="number" class="rounded input err" id="ic" min="0" oninput="InputFloat('c')"></td>
+                    <td>Цена за единицу</td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(Dc=\)</td>
+                    <td><input type="number" class="rounded input err" id="iDc" min="1" oninput="InputInt('Dc')"></td>
+                    <td>Количество ступеней количественных скидок</td>
+                </tr-->
+            </tbody>
+            <tbody>
+                <tr>
+                    <td colspan="3">
+                        <h4>Период планирования (опционально)</h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(T=\)</td>
+                    <td><input type="number" class="rounded input err" id="iT" min="0" oninput="InputDivisor('T',['D','d'],['H','h'],['P','p'],['B','b'])"></td>
+                    <td>Протяженность периода планирования</td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(D=\)</td>
+                    <td><input type="number" class="rounded input err" id="iD" min="0" oninput="InputDivident('D',['T','d'])"></td>
+                    <td>Величина спроса за период</td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(H=\)</td>
+                    <td><input type="number" class="rounded input err" id="iH" min="0" oninput="InputDivident('H',['T','h'])"></td>
+                    <td>Издержки хранения за период</td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(B=\)</td>
+                    <td><input type="number" class="rounded input err" id="iB" min="0" oninput="InputDivident('B',['T','b'])"></td>
+                    <td>Потери из-за дефицита за период</td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(P=\)</td>
+                    <td><input type="number" class="rounded input err" id="iP" min="0" oninput="InputDivident('P',['T','p'])"></td>
+                    <td>Потери из-за дефицита за период</td>
+                </tr>
+            </tbody>
+        </table>
+    </span>
+    <span class="rounded center">
+        <table class="aleft">
+            <tbody>
+                <tr>
+                    <td colspan="3">
+                        <h3>Результаты рассчёта</h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <div class="errMsg" id="errInput" style="display:none;">ОШИБКА: Исходные данные не заданы, либо заданы с ошибками.<br>Проверьте поля, отмеченные красным.</div>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody>
+                <tr>
+                    <td colspan="3">
+                        <h4>Основные результаты</h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="math aright eq_0">\(Q=\sqrt {\dfrac {2dK}h}=\)</td>
+                    <td class="math aright eq_P" style="display:none">\(Q=\sqrt {\dfrac {2dK}h \cdot \dfrac p{p-d}}=\)</td>
+                    <td class="math aright eq_B" style="display:none">\(Q=\sqrt {\dfrac {2dK}h \cdot \dfrac {b+h}b}=\)</td>
+                    <td class="math aright eq_BP" style="display:none">\(Q=\sqrt {\dfrac {2dK}h \cdot \dfrac {1+h/b}{1-d/p}}=\)</td>
+                    <td><input type="text" class="rounded input inf" id="oQ" readonly></td>
+                    <td>Оптимальный размер заказа</td>
+                </tr>
+                <tr>
+                    <td class="math aright eq_0">\(S=Q\)</td>
+                    <td class="math aright eq_P" style="display:none">\(S=\sqrt {\dfrac {2dK}h \cdot \dfrac {p-d}p}=\)</td>
+                    <td class="math aright eq_B" style="display:none">\(S=\sqrt {\dfrac {2dK}h \cdot \dfrac b{h+b}}=\)</td>
+                    <td class="math aright eq_BP" style="display:none">\(S=\sqrt {\dfrac {2dK}h \dfrac {p-d}p \dfrac b{h+b}}=\)</td>
+                    <td><input type="text" class="rounded input inf" id="oS" readonly></td>
+                    <td>Максимальная величина запаса</td>
+                </tr>
+                <tr>
+                    <td class="math aright eq_0">\(\tau=\sqrt {\dfrac {2K}{dh}}=\)</td>
+                    <td class="math aright eq_P" style="display:none">\(\tau=\dfrac {Sp}{d(p-d)}=\)</td>
+                    <td class="math aright eq_B" style="display:none">\(\tau=\dfrac Qd=\)</td>
+                    <td class="math aright eq_BP" style="display:none">\(\tau=\sqrt {\dfrac {2K}{dh}\cdot \dfrac {1+h/b}{1-d/p}=\)</td>
+                    <td><input type="text" class="rounded input inf" id="oT" readonly></td>
+                    <td>Оптимальное время цикла (между заказами)</td>
+                </tr>
+                <tr>
+                    <td class="math aright eq_0">\(с_с=K+\dfrac {h\tau Q}2=\)</td>
+                    <td class="math aright eq_P" style="display:none">\(с_с=K+\dfrac {h\tau S}2=\)</td>
+                    <td class="math aright eq_B" style="display:none">\(с_с=K+\dfrac {h\tau_1 S}2+\dfrac {b\tau_2 (Q-S)}2=\)</td>
+                    <td class="math aright eq_BP" style="display:none">\(с_с=K+\dfrac {p (hS^2+bS'^2)}{2d(p-d)}=\)</td>
+                    <td> <input type="text" class="rounded input inf" id="occ" readonly> </td>
+                    <td>Средние издержки за цикл</td>
+                </tr>
+                <tr>
+                    <td class="math aright eq_0">\(c=\dfrac {dK}Q + \dfrac {Qh}2=\)</td>
+                    <td class="math aright eq_P" style="display:none">\(c=\dfrac {dK}Q + \dfrac {Qh}2 \dfrac {p-d}d=\)</td>
+                    <td class="math aright eq_B" style="display:none">\(c=\dfrac {dK}Q + \dfrac {hS^2}{2Q} +\dfrac {b(Q-S)^2}{2Q}=\)</td>
+                    <td class="math aright eq_BP" style="display:none">\(c=\dfrac {dK(p-d)}{p(S'+S)} + \dfrac {hS^2+bS'^2}{2(S'+S)} =\)</td>
+                    <td> <input type="text" class="rounded input inf" id="oc" readonly> </td>
+                    <td>Средние издержки в единицу времени</td>
+                </tr>
+                <tr id="tbT">
+                    <td class="math aright">\(С=\dfrac {с_с*T}\tau=c*T=\)</td>
+                    <td> <input type="text" class="rounded input inf" id="oC" readonly> </td>
+                    <td>Средние издержки за период</td>
+                </tr>
+            </tbody>
+            <tbody id="tbTau">
+                <tr>
+                    <td colspan="3">
+                        <h4>Интервалы в цикле</h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="math aright eq_P ">\(\tau_1=\dfrac S{p-d}\)</td>
+                    <td class="math aright eq_B" style="display:none">\(\tau_1=\dfrac Sd\)</td>
+                    <td class="math aright  eq_BP" style="display:none">\(\tau_1= \dfrac Qp \dfrac b{b+h}\)</td>
+                    <td><input type="text" class="rounded input inf" id="oT1" readonly></td>
+                    <td class="eq_P ">Время пополнения и потребления</td>
+                    <td class="eq_B" style="display:none">Время потребления без дефицита</td>
+                    <td class=" eq_BP" style="display:none">Время пополнения и потребления</td>
+                </tr>
+                <tr>
+                    <td class="math aright eq_P ">\(\tau_2=\dfrac Sd\)</td>
+                    <td class="math aright eq_B" style="display:none">\(\tau_2=\dfrac (Q-S)d\)</td>
+                    <td class="math aright  eq_BP" style="display:none">\(\tau_2=\dfrac Qd \dfrac {p-d}p \cdot \dfrac b{h+b} \)</td>
+                    <td><input type="text" class="rounded input inf" id="oT2" readonly></td>
+                    <td class="eq_P ">Время только потребления</td>
+                    <td class="eq_B" style="display:none">Время потребления с дефицитом</td>
+                    <td class=" eq_BP" style="display:none">Время только потребления</td>
+                </tr>
+                <tr class="eq_BP">
+                    <td class="math aright">\(\tau_3=\dfrac Qd \dfrac {p-d}p \cdot \dfrac h{h+b}\)</td>
+                    <td><input type="text" class="rounded input inf" id="oT3" readonly></td>
+                    <td>Время потребления с дефицитом</td>
+                </tr>
+                <tr class="eq_BP">
+                    <td class="math aright">\(\tau_4=\dfrac Qp \dfrac h{b+h}\)</td>
+                    <td><input type="text" class="rounded input inf" id="oT4" readonly></td>
+                    <td>Время потребления и пополнения с дефицитом</td>
+                </tr>
+            </tbody>
+            <tbody id="tbDeficit">
+                <tr>
+                    <td colspan="3">
+                        <h4>Возможность дефицита</h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="math aright eqSb_B">\(S'=Q-S=\)</td>
+                    <td class="math aright eqSb_BP" style="display: none">\(S'=\dfrac{hS}b=\)</td>
+                    <td><input type="text" class="rounded input inf" id="oSb" readonly></td>
+                    <td>Оптимальный максимальный дефицит</td>
+                </tr>
+            </tbody>
+            <tbody id="tbDelayed">
+                <tr>
+                    <td colspan="3">
+                        <h4>Отложенное пополнение запаса</h4>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="math aright">\(l= L\%\tau=\)</td>
+                    <td><input type="text" class="rounded input inf" id="ol" readonly></td>
+                    <td>Эффективный срок выполнения заказа</td>
+                </tr>
+                <tr>
+                    <td class="math aright eq_0">\(R=ld\)</td>
+                    <td class="math aright eq_P1" style="display: none">\(l&le;\tau 2, R=ld\)</td>
+                    <td class="math aright eq_P2" style="display: none">\(l&gt;\tau 2, R=(p-d)(\tau-l)\)</td>
+                    <td class="math aright eq_B" style="display: none">\(R=d(\dfrac {h\tau}{b+h})\)</td>
+                    <td class="math aright eq_BP1" style="display: none">\(l&lt;\tau 2+\tau 3, R=(l-\tau_3)d\)</td>
+                    <td class="math aright eq_BP2" style="display: none">\(l&ge;\tau 2+\tau 3, R=(p-d)(\tau_1+\tau_2+\tau_3-l)\)</td>
+                    <td><input type="text" class="rounded input inf" id="oR" readonly></td>
+                    <td>Точка восстановления</td>
+                </tr>
+            </tbody>
+        </table>
+    </span>
+    <script type="text/javascript" src="script.js">
+    </script>
+</body>
+
+</html>

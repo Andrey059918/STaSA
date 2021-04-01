@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Расчёт СМО</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="/./favicon.png">
+</head>
+
+<body>
+    <script type="text/javascript" id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+    </script>
+
+    <table>
+        <tbody>
+            <tr>
+                <td colspan="3">
+                    <h3>Исходные данные</h3>
+                </td>
+            </tr>
+        </tbody>
+        <tbody>
+            <tr>
+                <td class="math-right">\(t(\lambda)=\)</td>
+                <td><input type="number" class="err" id="iTL" min="0" oninput="Input_TL()"></td>
+                <td>Средний интервал поступления заявок</td>
+            </tr>
+            <tr>
+                <td class="math-right">\(\lambda=\dfrac 1 {t(\lambda)}=\)</td>
+                <td><input type="number" class="err" id="iL" min="0" oninput="Input_L()"></td>
+                <td>Интенсивность поступления заявок</td>
+            </tr>
+        </tbody>
+        <tbody>
+            <tr>
+                <td class="math-right">\(t(\mu)=\)</td>
+                <td>
+                    <input type="number" class="err" id="iTM" min="0" oninput="Input_TM()">
+                </td>
+                <td>Среднее время обработки заявки каналом</td>
+            </tr>
+            <tr>
+                <td class="math-right">\(\mu=\dfrac 1 {t(\mu)}=\)</td>
+                <td>
+                    <input type="number" class="err" id="iM" min="0" oninput="Input_M()">
+                </td>
+                <td>Интенсивность обработки заявок каналом</td>
+            </tr>
+        </tbody>
+        <tbody>
+            <tr>
+                <td class="math-right">\(S=\)</td>
+                <td>
+                    <input type="number" class="ok" id="iS" value="1" min="1" oninput="Input_S()">
+                </td>
+                <td>Количество потоков обслуживания</td>
+            </tr>
+            <tr>
+                <td />
+                <td>
+                    <input type="checkbox" id="iI" oninput="Calculate()">
+                    <label for="iI"><span />Cвободная очередь</label>
+                </td>
+                <td />
+            </tr>
+            <tr>
+                <td class="math-right">\(n=\)</td>
+                <td>
+                    <input type="number" class="ok" id="iN" value="0" min="0" oninput="Input_N()">
+                </td>
+                <td id="queryMax">Максимальный размер очереди</td>
+                <td id="queryCalc" style="display:none">Размер очереди для расчёта</td>
+            </tr>
+        </tbody>
+        <tbody>
+            <tr>
+                <td colspan="3">
+                    <h3>Результаты рассчёта</h3>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <div class="errMsg" id="errInput" style="display:none;">ОШИБКА: Исходные данные не заданы, либо заданы с ошибками.<br>Проверьте поля, отмеченные красным.</div>
+                    <div class="errMsg" id="errUnstable" style="display:none;">ОШИБКА: СМО не может работать в установившемся режиме,<br>т.к. очередь будет бесконечно нарастать <span class="math-left">(\( \psi_к \geq 1\))</span>.</div>
+                </td>
+            </tr>
+        </tbody>
+        <tbody>
+            <tr>
+                <td class="math-right">\(N=n+S=\)</td>
+                <td> <input type="text" id="oN" readonly> </td>
+                <td>Максимум активных заявок в системе</td>
+            </tr>
+            <tr>
+                <td class="math-right">\(\psi = \dfrac \lambda \mu=\)</td>
+                <td><input type="text" id="oPsi" readonly></td>
+                <td>Интенсивность потока заявок (общая)</td>
+            </tr>
+            <tr>
+                <td class="math-right">\(\psi _к = \dfrac \psi S =\)</td>
+                <td><input type="text" id="oPsik" readonly></td>
+                <td>Интенсивность потока заявок (на канал)</td>
+            </tr>
+        </tbody>
+        <tbody>
+            <tr>
+                <td class="math-right" id="fP1">\(P_{отк} =P_N=\dfrac \lambda {\mu + \lambda}=\)</td>
+                <td class="math-right" id="fP2" style="display:none">\(P_{отк} =P_N=\)</td>
+                <td class="math-right" id="fP3" style="display:none">\(P_{отк} =0=\)</td>
+                <td><input type="text" id="oP" readonly></td>
+                <td>Вероятность отклонения заявки</td>
+            </tr>
+            <tr>
+                <td class="math-right" id="fQ1">\(Q=1-P_{отк} = \dfrac \mu {\mu + \lambda}=\)</td>
+                <td class="math-right" id="fQ2" style="display:none">\(Q=1-P_{отк}=\)</td>
+                <td class="math-right" id="fQ3" style="display:none">\(Q=1=\)</td>
+                <td><input type="text" id="oQ" readonly></td>
+                <td>Вероятность обслуживания заявки</td>
+            </tr>
+            <tr>
+                <td class="math-right">\(A_а=\lambda \cdot Q=\)</td>
+                <td><input type="text" id="oAa" readonly></td>
+                <td>Абсолютная пропускная способность</td>
+            </tr>
+            <tr>
+                <td class="math-right">\(A_н=\mu \cdot S=\)</td>
+                <td><input type="text" id="oAn" readonly></td>
+                <td>Номинальная пропускная способность</td>
+            </tr>
+            <tr>
+                <td class="math-right">\(A_ф=\dfrac {A_а} {A_н}=\)</td>
+                <td><input type="text" id="oAf" readonly></td>
+                <td>Фактическая пропускная способность, %</td>
+            </tr>
+        </tbody>
+        <tbody id="ResThread" style="display:none">
+            <tr>
+                <td class="math-right">\(S_з =\psi \cdot Q\)</td>
+                <td><input type="text" id="oSz" readonly></td>
+                <td>Среднее число занятых каналов</td>
+            </tr>
+            <tr>
+                <td class="math-right">\( K_з =S_з / S\)</td>
+                <td><input type="text" id="oKz" readonly></td>
+                <td>Коэффициент занятости каналов</td>
+            </tr>
+        </tbody>
+        <tbody id="ResQuery" style="display:none">
+            <tr>
+                <td id="fLq1" class="math-right">\(L_q=\dfrac{\psi^2 (1-\psi^n (n+1+n\psi))}{(1-\psi)^2} P_0=\)</td>
+                <td id="fLq2" class="math-right" style="display:none">\(L_q=\dfrac{n \cdot (n+1)}{2 \cdot (n+2)}=\)</td>
+                <td id="fLq3" class="math-right" style="display:none">\(L_q=\dfrac {\psi^2}{1-\psi}=\)</td>
+                <td id="fLq4" class="math-right" style="display:none">\(L_q=\dfrac{\psi^{S+1}}{S!S}\dfrac {(1-\psi_к^n(n+1+n\psi_к))}{(1-\psi_к)^2} \cdot P_0=\)</td>
+                <td id="fLq5" class="math-right" style="display:none">\(L_q=\dfrac{\psi^S}{S!}\cdot \dfrac{n(n+1)}2 \cdot P_0=\)</td>
+                <td id="fLq6" class="math-right" style="display:none">\(L_q=\dfrac {\psi^S \psi_к}{!S (1-\psi_к)^2} P_0=\)</td>
+                <td><input type="text" id="oLq" readonly></td>
+                <td>Среднее число заявок в очереди</td>
+            </tr>
+            <tr>
+                <td class="math-right">\(W_q=\dfrac{L_q}{A_а} =\)</td>
+                <td><input type="text" id="oWq" readonly></td>
+                <td>Среднее время заявки в очереди</td>
+            </tr>
+            <tr>
+                <td id="fLs1" class="math-right">\(L_s=\sum\limits_{i=0}^N i\cdot P_i=\)</td>
+                <td id="fLs2" class="math-right" style="display:none">\(L_s=\dfrac {n+1}2=\)</td>
+                <td id="fLs3" class="math-right" style="display:none">\(L_s=\dfrac \psi{1-\psi}=\)</td>
+                <td id="fLs4" class="math-right" style="display:none">\(L_s=L_q+S_з=\)</td>
+                <td><input type="text" id="oLs" readonly></td>
+                <td>Среднее число заявок в системе</td>
+            </tr>
+            <tr>
+                <td class="math-right">\(W_s= \dfrac{L_s}{A_а}=\)</td>
+                <td><input type="text" id="oWs" readonly></td>
+                <td>Среднее время заявки в системе</td>
+            </tr>
+        </tbody>
+        <tbody id="ResProb">
+            <tr>
+                <td colspan="3">
+                    <h3>Вероятности \(P_k\)</h3>
+                </td>
+            </tr>
+            <tr>
+                <td class="math-right">\(P_0=\)</td>
+                <td><input type="text" id="oP0" readonly></td>
+                <td rowspan="0">
+                    <div>Вероятность события "Активно k заявок":</div>
+                    <div id="P_S1_I" class="math-left" style="display:none">
+                        \(P_0=1-\psi\)
+                    </div>
+                    <div id="P_S1_P1" class="math-left" style="display:none">
+                        \(P_k=\dfrac 1 {N+1}\)
+                    </div>
+                    <div id="P_S1_PP" class="math-left">
+                        \(P_0=\dfrac {1-\psi}{1-\psi^{N+1}}\)
+                    </div>
+                    <div id="P_S1" class="math-left">
+                        \(P_k=P_0\cdot \psi\ ^k\)
+                    </div>
+                    <div id="P_SS_N0" class="math-left" style="display:none">
+                        \(P_0=\Big[\sum\limits_{k=0}^S\dfrac{\psi^k}{k!}\Big]^{-1}\)
+                    </div>
+                    <div id="P_SS_I" class="math-left" style="display:none">
+                        \(P_0=\Big[\sum\limits_{k=0}^S\dfrac{\psi^k}{k!}+\dfrac{\psi^{S+1}}{S! \cdot (S-\psi)}\Big]^{-1}\)
+                    </div>
+                    <div id="P_SS_NN_P1" class="math-left" style="display:none">
+                        \(P_0=\Big[\sum\limits_{k=0}^S\dfrac{\psi^k}{k!} +\dfrac{\psi^{S} \cdot n}{S!}\Big]^{-1}\)
+                    </div>
+                    <div id="P_SS_NN_PP" class="math-left" style="display:none">
+                        \(P_0=\Big[\sum\limits_{k=0}^S\dfrac{\psi^k}{k!}+ \dfrac{\psi^{S+1}\cdot(1-\psi_к^n)}{S!\cdot(S-\psi)}\Big]^{-1}\)
+                    </div>
+                    <div id="P_SSPK_N0" class="math-left" style="display:none">
+                        \(P_k= \dfrac{\psi^k}{k!} \cdot P_0\)
+                    </div>
+                    <div id="P_SSPK_NN_P1" class="math-left" style="display:none">
+                        \( P_k=
+                        \left\{\begin{array}{l}
+                        \dfrac{\psi^k}{k!} \cdot P_0, & k=1\dots S \\
+                        \dfrac{\psi^S}{S!} \cdot P_0, & k=S+1\dots N
+                        \end{array}\right. \)
+                    </div>
+                    <div id="P_SSPK_NN_PP" class="math-left" style="display:none">
+                        \( P_k=
+                        \left\{\begin{array}{l}
+                        \dfrac{\psi^k}{k!} \cdot P_0, & k=1\dots S \\
+                        \dfrac{\psi^k}{S!\cdot S^{k-S}} \cdot P_0, & k=S+1\dots N
+                        \end{array}\right. \)
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <script type="text/javascript" src="script.js">
+    </script>
+</body>
+
+</html>

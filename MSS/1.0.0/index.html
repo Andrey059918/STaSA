@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>СМО без очереди</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="/./favicon.png">
+</head>
+
+<body>
+    <table>
+        <tr>
+            <td colspan="3">
+                <h4>Ввод</h4>
+            </td>
+        </tr>
+        <tr>
+            <td>λ</td>
+            <td> =</td>
+            <td><input type="number" id="L" oninput="process()"></td>
+        </tr>
+        <tr>
+            <td>t<sub>об</sub></td>
+            <td> =</td>
+            <td><input type="number" id="T" oninput="processT()"></td>
+        </tr>
+
+        <tr>
+            <td colspan="3">
+                <h4>Ввод или рассчёт</h4>
+            </td>
+        </tr>
+        <tr>
+            <td>μ</td>
+            <td> =</td>
+            <td><input type="number" id="M" oninput="process()"></td>
+        </tr>
+
+        <tr>
+            <td colspan="3">
+                <h4>Рассчёт</h4>
+            </td>
+        </tr>
+        <tr>
+            <td>q</td>
+            <td> =</td>
+            <td><input type="number" id="q" readonly="true"></td>
+        </tr>
+        <tr>
+            <td>A</td>
+            <td> =</td>
+            <td><input type="number" id="A" readonly="true"></td>
+        </tr>
+        <tr>
+            <td>P<sub>отк</sub></td>
+            <td> =</td>
+            <td><input type="number" id="Potk" readonly="true"></td>
+        </tr>
+        <tr>
+            <td>A<sub>ном</sub></td>
+            <td> =</td>
+            <td><input type="number" id="Anom" readonly="true"></td>
+        </tr>
+        <tr>
+            <td><span class="frac"><sup>A<sub>ном</sub></sup><sub>A</sub></span></td>
+            <td> =</td>
+            <td><input type="number" id="R" readonly="true"></td>
+        </tr>
+
+    </table>
+    <script type="text/javascript" src="script.js">
+
+    </script>
+</body>
+
+</html>

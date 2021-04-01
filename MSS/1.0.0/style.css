@@ -1,0 +1,21 @@
+span.frac {
+    display: inline-block;
+    font-size: 80%;
+    text-align: center;
+}
+
+span.frac > sup {
+    display: block;
+    border-bottom: 1px solid;
+    font: inherit;
+}
+
+span.frac > sub {
+    display: block;
+    font: inherit;
+}
+
+h4 {
+    margin: 5px;
+    text-align: center;
+}
